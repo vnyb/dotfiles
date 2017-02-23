@@ -1,0 +1,58 @@
+[alias]
+    cached=diff --cached
+    cat=-p cat-file -p
+    st=!git -p status
+    vomit=commit
+    pick=cherry-pick
+    master=checkout master
+    tempo=commit -a -m tempo
+    undo=reset HEAD~1
+    unstash=stash apply
+    amend=commit -s --amend
+    squash=commit -s --amend -C HEAD
+    track=add -N
+    untrack=rm --cached
+    br=branch
+    willpush=log origin/master..master
+;        k=!gitk ^master~200
+    co=checkout
+
+[core]
+    preloadindex=true
+	excludesfile = ~/.gitignore_global
+
+[color]
+    ui     = auto
+    diff   = auto
+    branch = auto
+    status = auto
+    pager  = true
+    interactive = auto
+
+[color "diff"]
+    meta = green
+    frag = yellow
+    old = magenta
+    new = bold cyan
+
+[color "status"]
+    header = bold blue
+    added  = green
+    changed = bold red
+    untracked = bold black
+
+
+[merge]
+    verbosity = 1
+[clean]
+    requireForce = false
+[pack]
+    threads = 0
+[status]
+    submodulesummary = 1
+[push]
+    default = tracking
+
+[user]
+    name  = {{ full_name }}
+    email = {{ email }}

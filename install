@@ -1,0 +1,45 @@
+#!/bin/bash -e
+
+dotfile="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+#tmp="$(mktemp -d)"
+
+cache_dir="$HOME/.cache/dotfiles"
+now=$(date +%Y-%m-%d_%H%M%S)
+bck_name="backup-$now"
+bck_dir="$cache_dir/$bck_name"
+
+on_exit() {
+    if [[ "$(ls -A "$bck_dir")" ]]; then
+        (cd "$cache_dir" && tar cf "$bck_name.tar.gz" "$bck_name")
+    fi
+    rm -rf "$bck_dir"
+}
+trap on_exit EXIT
+
+backup_file() {
+    path="$1"
+
+    [[ ! -e "$path" ]] && return
+
+    rel_path="${path/$HOME\//}"
+    dst="$bck_dir/$rel_path"
+
+    mkdir -p "$(dirname "$dst")"
+
+    echo -e "backup\t$path -> $dst"
+    cp "$path" "$dst"
+}
+
+install_file() {
+    src="$1"
+    dst="$HOME/${2:-".$1"}"
+
+    backup_file "$dst"
+
+    "$dotfile/render" "$src" "$tmp/$dst"
+    echo -e "install\t$src -> $dst"
+}
+
+
+install_file gitconfig
+install_file gitignore_global
