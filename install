@@ -43,3 +43,4 @@ install_file() {
 
 install_file gitconfig
 install_file gitignore_global
+install_file toprc
