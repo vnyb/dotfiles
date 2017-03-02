@@ -17,12 +17,12 @@ on_exit() {
 trap on_exit EXIT
 
 backup_file() {
-    path="$1"
+    local path="$1"
 
     [[ ! -e "$path" ]] && return
 
-    rel_path="${path/$HOME\//}"
-    dst="$bck_dir/$rel_path"
+    local rel_path="${path/$HOME\//}"
+    local dst="$bck_dir/$rel_path"
 
     mkdir -p "$(dirname "$dst")"
 
@@ -31,12 +31,12 @@ backup_file() {
 }
 
 install_file() {
-    src="$1"
-    dst="$HOME/${2:-".$1"}"
+    local src="$1"
+    local dst="$HOME/${2:-".$1"}"
 
     backup_file "$dst"
 
-    "$dotfile/render" "$src" "$tmp/$dst"
+    "$dotfile/render" "$src" "$dst"
     echo -e "install\t$src -> $dst"
 }
 
